@@ -71,7 +71,7 @@ def connect_mqtt() -> mqtt_client:
 
 def subscribe(client: mqtt_client):
     def on_message(client, userdata, msg):
-        print("in msg")
+        print(msg.payload.decode())
         data = decode_msg(msg.payload.decode())
         write_to_database(data)
 
@@ -81,7 +81,6 @@ def subscribe(client: mqtt_client):
 
 def run():
     client = connect_mqtt()
-    print(client)
     subscribe(client)
     client.loop_forever()
 
