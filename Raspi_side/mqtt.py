@@ -32,7 +32,7 @@ def decode_msg(msg):
     voc = data[6]
     current_time = datetime.datetime.now().strftime("%Y_%m_%d_-_%H_%M_%S.%f")
 
-    print(moisture, air_temperature, gnd_temperature, pressure, humidity, co2, voc, current_time)
+    return (moisture, air_temperature, gnd_temperature, pressure, humidity, co2, voc, current_time)
 
 def write_to_database(data):
     SQL_COMMAND = "INSERT INTO advanced_sensor_data (moisture, air_temperature, gnd_temperature, pressure, humidity, co2, voc, time_stamp) VALUES (%s, %s, %s, %s, %s, %s, %s, %s);"
