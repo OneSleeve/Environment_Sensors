@@ -18,7 +18,6 @@ mydb = MySQLdb.connect(
 mycursor = mydb.cursor()
 
 def decode_msg(msg):
-    print("decode")
     data = []
 
     for line in msg.splitlines():
@@ -38,7 +37,6 @@ def decode_msg(msg):
     return (moisture, air_temperature, gnd_temperature, pressure, humidity, co2, voc, current_time)
 
 def write_to_database(data):
-    print("write")
     SQL_COMMAND = "INSERT INTO advanced_sensor_data (moisture, air_temperature, gnd_temperature, pressure, humidity, co2, voc, time_stamp) VALUES (%s, %s, %s, %s, %s, %s, %s, %s);"
 
     mycursor.execute(SQL_COMMAND,data)
@@ -71,7 +69,6 @@ def connect_mqtt() -> mqtt_client:
 
 def subscribe(client: mqtt_client):
     def on_message(client, userdata, msg):
-        print(msg.payload.decode())
         data = decode_msg(msg.payload.decode())
         write_to_database(data)
 
@@ -84,5 +81,4 @@ def run():
     subscribe(client)
     client.loop_forever()
 
-print("run")
 run()
