@@ -10,7 +10,7 @@ mydb = MySQLdb.connect(
         host="localhost",
         user="data_feeder",
         password="smoke420",
-        database="advanced_weed_sensors"
+        database="weed_sensors"
 )
 
 mycursor = mydb.cursor()
@@ -35,7 +35,7 @@ def decode_msg(msg):
     print(moisture, air_temperature, gnd_temperature, pressure, humidity, co2, voc, current_time)
 
 def write_to_database(data):
-    SQL_COMMAND = "INSERT INTO sensor_data (moisture, air_temperature, gnd_temperature, pressure, humidity, co2, voc, time_stamp) VALUES (%s, %s, %s, %s, %s, %s, %s, %s);"
+    SQL_COMMAND = "INSERT INTO advanced_sensor_data (moisture, air_temperature, gnd_temperature, pressure, humidity, co2, voc, time_stamp) VALUES (%s, %s, %s, %s, %s, %s, %s, %s);"
 
     mycursor.execute(SQL_COMMAND,data)
     
