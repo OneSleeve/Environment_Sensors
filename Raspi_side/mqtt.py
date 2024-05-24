@@ -1,11 +1,14 @@
 #!/usr/bin/python
 
+from time import sleep
 import random
 from paho.mqtt import client as mqtt_client
 
 import datetime
 import MySQLdb
 import requests
+
+sleep(60)
 
 # Mysql Setup
 mydb = MySQLdb.connect(
