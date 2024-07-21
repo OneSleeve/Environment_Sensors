@@ -45,7 +45,7 @@ moisture = np.array(moisture)
 temperature = np.array(temperature)
 
 plt.plot(dates, moisture, dates, temperature)
-plt.yticks(np.arange(0, 101, step= 2.5))
+plt.yticks(np.arange(0, 101, step=2.5))
 plt.gca().xaxis.set_major_locator(plt.MaxNLocator(20))
 plt.xticks(rotation=-30, ha="left", rotation_mode="anchor")
 plt.grid()

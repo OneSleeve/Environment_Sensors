@@ -111,8 +111,8 @@ plt.plot(
         time_stamps, gnd_temperature,
         time_stamps, pressure,
         time_stamps, humidity,
-#        time_stamps, co2,
-#        time_stamps, voc
+        time_stamps, co2,
+        time_stamps, voc
         )
 plt.yticks(np.arange(0, 101, step= 2.5))
 plt.gca().xaxis.set_major_locator(plt.MaxNLocator(20))
