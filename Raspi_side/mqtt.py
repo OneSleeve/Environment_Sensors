@@ -35,7 +35,7 @@ def decode_msg(msg):
     humidity = data[4]
     co2 = data[5]
     voc = data[6]
-    current_time = time.time()
+    current_time = 0
 
     return (moisture, air_temperature, gnd_temperature, pressure, humidity, co2, voc, current_time)
 
