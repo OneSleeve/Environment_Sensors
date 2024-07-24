@@ -17,6 +17,9 @@ mydb = MySQLdb.connect(
 
 mycursor = mydb.cursor()
 
+data_over_5s = []
+time_for_5s = int(time.time())
+
 def decode_msg(msg):
     data = []
 
@@ -37,6 +40,7 @@ def decode_msg(msg):
     return (moisture, air_temperature, gnd_temperature, pressure, humidity, co2, voc, current_time)
 
 def write_to_database(data):
+    data[-1] = int(time.time())
     SQL_COMMAND = "INSERT INTO advanced_sensor_data (moisture, air_temperature, gnd_temperature, pressure, humidity, co2, voc, time_stamp) VALUES (%s, %s, %s, %s, %s, %s, %s, %s);"
 
     mycursor.execute(SQL_COMMAND,data)
@@ -68,9 +72,26 @@ def connect_mqtt() -> mqtt_client:
 
 
 def subscribe(client: mqtt_client):
+    global time_for_5s
     def on_message(client, userdata, msg):
+        global time_for_5s
         data = decode_msg(msg.payload.decode())
-        write_to_database(data)
+        data_over_5s.append(data)
+
+        if (int(time.time()) - time_for_5s) >= 5:
+            time_for_5s = int(time.time())
+
+            n = len(data_over_5s)
+            m = len(data_over_5s[0])
+            sums = [0] * m
+
+            for subarray in data_over_5s:
+                for i in range(m):
+                    sums += subarray[i]
+
+            data_to_write = [s / n for s in sums]
+
+            write_to_database(data_to_write)
 
     client.subscribe(topic)
     client.on_message = on_message
