@@ -28,16 +28,16 @@ def decode_msg(msg):
             line = line.split(":")[1]
             data.append(line)
 
-    moisture = data[0]
-    air_temperature = data[1]
-    gnd_temperature = data[2]
-    pressure = data[3]
-    humidity = data[4]
-    co2 = data[5]
-    voc = data[6]
+    moisture = float(data[0])
+    air_temperature = float(data[1])
+    gnd_temperature = float(data[2])
+    pressure = float(data[3])
+    humidity = float(data[4])
+    co2 = float(data[5])
+    voc = float(data[6])
     current_time = 0
 
-    return (moisture, air_temperature, gnd_temperature, pressure, humidity, co2, voc, current_time)
+    return [moisture, air_temperature, gnd_temperature, pressure, humidity, co2, voc, current_time]
 
 def write_to_database(data):
     data[-1] = int(time.time())
@@ -72,13 +72,17 @@ def connect_mqtt() -> mqtt_client:
 
 
 def subscribe(client: mqtt_client):
-    global time_for_5s
+    global time_for_5s, data_over_5s
     def on_message(client, userdata, msg):
-        global time_for_5s
+        global time_for_5s, data_over_5s
         data = decode_msg(msg.payload.decode())
         data_over_5s.append(data)
+        print(data_over_5s)
+        print("message")
 
         if (int(time.time()) - time_for_5s) >= 5:
+            print("5s")
+            
             time_for_5s = int(time.time())
 
             n = len(data_over_5s)
@@ -87,11 +91,14 @@ def subscribe(client: mqtt_client):
 
             for subarray in data_over_5s:
                 for i in range(m):
-                    sums += subarray[i]
+                    print(subarray[i])
+                    sums[i] += subarray[i]
 
             data_to_write = [s / n for s in sums]
 
             write_to_database(data_to_write)
+
+            data_over_5s = []
 
     client.subscribe(topic)
     client.on_message = on_message
