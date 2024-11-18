@@ -18,7 +18,7 @@ def connect():
     return client
     
 def consturct_string(moisture, air_temperature, ground_temperature, pressure, humidity, eco2, voc):
-    return f"""
+    output = f"""
 Sensor_Data
 moisture:{moisture}
 air_temperature:{air_temperature}
@@ -29,3 +29,7 @@ eco2:{eco2}
 voc:{voc}
 end
 """
+
+output = unicode(output, "utf-8")
+
+return output

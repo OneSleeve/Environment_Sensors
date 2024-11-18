@@ -9,7 +9,7 @@ import MySQLdb
 import requests
 from bs4 import BeautifulSoup
 
-request = requests.get('http://192.168.177.63/', timeout=10)
+request = requests.get('http://192.168.177.36/', timeout=10)
 
 soup = BeautifulSoup(request.content, 'html.parser')
 

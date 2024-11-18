@@ -75,7 +75,7 @@ def subscribe(client: mqtt_client):
     global time_for_5s, data_over_5s
     def on_message(client, userdata, msg):
         global time_for_5s, data_over_5s
-        data = decode_msg(msg.payload.decode())
+        data = decode_msg(msg.payload.decode("utf-8"))
         data_over_5s.append(data)
         print(data_over_5s)
         print("message")
